@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LogiSmart: projeto de Administração e Logística.">
+<title>LogiSmart | Administração e Logística</title>
+
+<style>
+:root {
+  --navy:#123b6d;
+  --blue:#1d5e96;
+  --green:#16a085;
+  --bg:#f3f6fb;
+  --white:#fff;
+  --text:#1e293b;
+  --muted:#64748b;
+  --border:#e2e8f0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:white;
+  border-bottom:1px solid var(--border);
+  padding:14px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+}
+.logo{font-size:25px;font-weight:800;color:var(--navy)}
+.logo span{color:var(--green)}
+nav{display:flex;flex-wrap:wrap;gap:5px}
+nav button{
+  background:transparent;
+  border:0;
+  color:var(--navy);
+  font-size:13px;
+  font-weight:bold;
+  padding:9px 11px;
+  border-radius:8px;
+  cursor:pointer;
+}
+nav button:hover,nav button.active{
+  background:#e3f5f0;
+  color:#087b67;
+}
+.hero{
+  background:linear-gradient(125deg,#0b2343,#15558b,#138b83);
+  color:white;
+  padding:58px 6%;
+}
+.hero small{
+  color:#8cf0d6;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.hero h1{
+  font-size:clamp(32px,5vw,53px);
+  line-height:1.12;
+  max-width:800px;
+  margin:12px 0;
+}
+.hero p{max-width:720px;color:#e2e8f0}
+main{max-width:1150px;margin:auto;padding:30px 20px 55px}
+.page{display:none}
+.page.active{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:.5}to{opacity:1}}
+h2,h3{color:var(--navy)}
+h2{margin-top:0}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:17px;
+}
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px;
+  box-shadow:0 5px 18px #0f172a08;
+  margin-bottom:16px;
+}
+.card p{color:var(--muted)}
+.icon{font-size:31px}
+.metric{font-size:29px;font-weight:800;color:var(--green)}
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:22px;
+  padding-bottom:12px;
+}
+.tab{
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  background:#e5edf6;
+  color:var(--navy);
+  font-weight:bold;
+  cursor:pointer;
+}
+.tab.active,.tab:hover{background:var(--navy);color:white}
+.panel{display:none}
+.panel.active{display:block}
+.btn{
+  border:0;
+  display:inline-block;
+  background:var(--green);
+  color:white;
+  padding:11px 17px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
+}
+.btn:hover{filter:brightness(.93)}
+.btn.secondary{background:var(--navy)}
+label{display:block;font-weight:bold;margin:13px 0 5px}
+input,select,textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  background:white;
+  font:inherit;
+}
+input[type=checkbox]{width:auto}
+textarea{min-height:100px;resize:vertical}
+form{max-width:680px}
+.notice{
+  background:#e5f5f1;
+  color:#12634f;
+  padding:14px;
+  border-radius:9px;
+  margin-top:15px;
+  overflow-wrap:anywhere;
+}
+.muted{color:var(--muted);font-size:13px}
+.route{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+  padding:24px 10px;
+  background:#eef5fb;
+  border-radius:12px;
+}
+.route-point{text-align:center;font-weight:bold}
+.route-point span{display:block;font-size:30px}
+.route-arrow{font-size:24px;color:var(--green)}
+.progress{
+  height:9px;
+  background:#e2e8f0;
+  border-radius:8px;
+  overflow:hidden;
+  margin-top:15px;
+}
+.progress div{
+  height:100%;
+  width:0;
+  background:var(--green);
+  transition:width .2s;
+}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{padding:11px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:#edf3f9;color:var(--navy)}
+footer{
+  background:#0b2343;
+  color:white;
+  text-align:center;
+  padding:27px 15px;
+}
+footer p{color:#cbd5e1;font-size:13px}
+[contenteditable=true]:focus{
+  outline:2px dashed var(--green);
+  background:#f0fdfa;
+}
+@media(max-width:650px){
+  header{align-items:flex-start;flex-direction:column}
+  nav{gap:3px}
+  nav button{padding:8px;font-size:12px}
+  main{padding:23px 13px 40px}
+  .hero{padding:40px 20px}
+  .card{padding:17px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Logi<span>Smart.</span></div>
+  <nav aria-label="Navegação principal">
+    <button class="nav-btn active" data-page="inicio">Início</button>
+    <button class="nav-btn" data-page="indicadores">Indicadores</button>
+    <button class="nav-btn" data-page="transporte">Transporte</button>
+    <button class="nav-btn" data-page="estoque">Estoque</button>
+    <button class="nav-btn" data-page="pesquisa">Pesquisa</button>
+    <button class="nav-btn" data-page="solucoes">Soluções</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <small>ADMINISTRAÇÃO • LOGÍSTICA • INOVAÇÃO</small>
+  <h1 id="heroTitle">Logística inteligente para resultados melhores.</h1>
+  <p id="heroDescription">
+    Conheça nosso projeto, explore indicadores e descubra oportunidades
+    para melhorar os processos logísticos.
+  </p>
+</section>
+
+<main>
+
+<!-- PÁGINA 1: INÍCIO -->
+<section class="page active" id="inicio">
+  <div class="tabs" data-tabs="inicio">
+    <button class="tab active" data-panel="home-visao">Visão geral</button>
+    <button class="tab" data-panel="home-equipe">Integrantes</button>
+    <button class="tab" data-panel="home-objetivos">Objetivos</button>
+  </div>
+
+  <div class="panel active" id="home-visao">
+    <h2>Bem-vindo ao LogiSmart</h2>
+    <p>Uma plataforma acadêmica para estudar a gestão logística, interpretar dados e desenvolver propostas de melhoria.</p>
+    <div class="grid">
+      <article class="card">
+        <div class="icon">📊</div>
+        <h3>Indicadores</h3>
+        <p>Analise métricas de desempenho, entregas e custos.</p>
+        <button class="btn" data-goto="indicadores">Explorar</button>
+      </article>
+      <article class="card">
+        <div class="icon">🚚</div>
+        <h3>Transporte</h3>
+        <p>Conheça as etapas de distribuição e estime despesas.</p>
+        <button class="btn" data-goto="transporte">Explorar</button>
+      </article>
+      <article class="card">
+        <div class="icon">📦</div>
+        <h3>Estoque</h3>
+        <p>Simule consumo e planeje a reposição de materiais.</p>
+        <button class="btn" data-goto="estoque">Explorar</button>
+      </article>
+      <article class="card">
+        <div class="icon">📝</div>
+        <h3>Pesquisa</h3>
+        <p>Registre respostas e observe os problemas mais relatados.</p>
+        <button class="btn" data-goto="pesquisa">Explorar</button>
+      </article>
+      <article class="card">
+        <div class="icon">💡</div>
+        <h3>Soluções</h3>
+        <p>Organize propostas e acompanhe as etapas do projeto.</p>
+        <button class="btn" data-goto="solucoes">Explorar</button>
+      </article>
+    </div>
+  </div>
+
+  <div class="panel" id="home-equipe">
+    <h2>Identificação do trabalho</h2>
+    <div class="card">
+      <p><b>Instituição:</b> <span contenteditable="true">Insira o nome da instituição</span></p>
+      <p><b>Integrantes:</b> <span contenteditable="true">Insira os nomes dos integrantes</span></p>
+      <p><b>Professor:</b> <span contenteditable="true">Insira o nome do professor</span></p>
+      <p><b>Empresa pesquisada:</b> <span contenteditable="true">Insira o nome da empresa</span></p>
+      <p class="muted">Clique nos textos para editá-los. As alterações não são salvas permanentemente.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="home-objetivos">
+    <h2>Objetivos do projeto</h2>
+    <div class="card">
+      <h3>Objetivo geral</h3>
+      <p>Investigar um problema logístico e propor melhorias utilizando conceitos de Administração e análise de dados.</p>
+      <h3>Objetivos específicos</h3>
+      <ul>
+        <li>Compreender os processos de transporte e estoque.</li>
+        <li>Coletar informações por meio de pesquisa.</li>
+        <li>Identificar oportunidades de melhoria.</li>
+        <li>Apresentar uma proposta viável e indicadores de avaliação.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PÁGINA 2: INDICADORES -->
+<section class="page" id="indicadores">
+  <div class="tabs" data-tabs="indicadores">
+    <button class="tab active" data-panel="ind-dashboard">Dashboard</button>
+    <button class="tab" data-panel="ind-entregas">Entregas</button>
+    <button class="tab" data-panel="ind-custos">Custos</button>
+    <button class="tab" data-panel="ind-editar">Editar dados</button>
+  </div>
+
+  <div class="panel active" id="ind-dashboard">
+    <h2>Painel de desempenho</h2>
+    <p>Indicadores demonstrativos que você pode atualizar na aba “Editar dados”.</p>
+    <div class="grid">
+      <div class="card"><h3>Entregas no prazo</h3><div class="metric" id="kpiDelivery">72%</div></div>
+      <div class="card"><h3>Precisão do estoque</h3><div class="metric" id="kpiStock">94%</div></div>
+      <div class="card"><h3>Pedidos com erros</h3><div class="metric" id="kpiErrors">8%</div></div>
+      <div class="card"><h3>Tempo médio</h3><div class="metric" id="kpiTime">3,5 dias</div></div>
+    </div>
+    <div class="card">
+      <h3>Comparação de entregas</h3>
+      <div id="deliveryBars"></div>
+      <p class="muted">Gráfico simplificado com valores ilustrativos.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="ind-entregas">
+    <h2>Indicadores de entrega</h2>
+    <div class="card">
+      <h3>Taxa de pontualidade</h3>
+      <p>Entregas no prazo ÷ total de entregas × 100.</p>
+      <div class="notice">Exemplo: 72 entregas no prazo de um total de 100 = 72%.</div>
+      <h3>Tempo médio de entrega</h3>
+      <p>Soma dos tempos das entregas ÷ quantidade de entregas.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="ind-custos">
+    <h2>Indicadores de custos e qualidade</h2>
+    <div class="card">
+      <h3>Custo por pedido</h3>
+      <p>Custos logísticos totais ÷ quantidade de pedidos.</p>
+      <h3>Taxa de erros</h3>
+      <p>Pedidos com erros ÷ total de pedidos × 100.</p>
+      <h3>Precisão do estoque</h3>
+      <p>Itens registrados corretamente ÷ total de itens verificados × 100.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="ind-editar">
+    <h2>Atualizar indicadores</h2>
+    <div class="card">
+      <form id="kpiForm">
+        <label>Entregas no prazo (%)</label>
+        <input id="delivery" type="number" min="0" max="100" value="72" required>
+        <label>Precisão do estoque (%)</label>
+        <input id="stock" type="number" min="0" max="100" value="94" required>
+        <label>Pedidos com erros (%)</label>
+        <input id="errors" type="number" min="0" max="100" value="8" required>
+        <label>Tempo médio (dias)</label>
+        <input id="time" type="number" min="0" step="0.1" value="3.5" required>
+        <button class="btn" style="margin-top:16px">Atualizar painel</button>
+        <div class="notice" id="kpiMessage" aria-live="polite">Os valores iniciais são exemplos.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- PÁGINA 3: TRANSPORTE -->
+<section class="page" id="transporte">
+  <div class="tabs" data-tabs="transporte">
+    <button class="tab active" data-panel="trans-fluxo">Fluxo logístico</button>
+    <button class="tab" data-panel="trans-calculo">Calculadora</button>
+    <button class="tab" data-panel="trans-planejamento">Planejamento</button>
+  </div>
+
+  <div class="panel active" id="trans-fluxo">
+    <h2>Fluxo de distribuição</h2>
+    <div class="card">
+      <div class="route">
+        <div class="route-point"><span>🏭</span>Fornecedor</div>
+        <div class="route-arrow">→</div>
+        <div class="route-point"><span>📦</span>Armazém</div>
+        <div class="route-arrow">→</div>
+        <div class="route-point"><span>🚚</span>Transporte</div>
+        <div class="route-arrow">→</div>
+        <div class="route-point"><span>🏪</span>Cliente</div>
+      </div>
+      <p>O fluxo representa as etapas básicas de movimentação de mercadorias.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="trans-calculo">
+    <h2>Calculadora de transporte</h2>
+    <div class="card">
+      <form id="routeForm">
+        <label>Distância da rota (km)</label>
+        <input id="distance" type="number" min="0" step="0.1" value="120" required>
+        <label>Custo estimado por km (R$)</label>
+        <input id="cost" type="number" min="0" step="0.01" value="2.50" required>
+        <button class="btn" style="margin-top:16px">Calcular custo</button>
+      </form>
+      <div class="notice" id="routeResult" aria-live="polite">Custo estimado: R$ 300,00.</div>
+      <p class="muted">Não inclui pedágios, carga e descarga ou outros custos não informados.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="trans-planejamento">
+    <h2>Planejamento de distribuição</h2>
+    <div class="grid">
+      <div class="card"><h3>1. Origem e destino</h3><p>Identifique o armazém, fornecedores e clientes.</p></div>
+      <div class="card"><h3>2. Comparação</h3><p>Compare distâncias, prazos, trânsito e despesas.</p></div>
+      <div class="card"><h3>3. Avaliação</h3><p>Verifique se a alternativa atende aos requisitos operacionais.</p></div>
+    </div>
+    <p class="notice">Este módulo não calcula trajetos geográficos reais.</p>
+  </div>
+</section>
+
+<!-- PÁGINA 4: ESTOQUE -->
+<section class="page" id="estoque">
+  <div class="tabs" data-tabs="estoque">
+    <button class="tab active" data-panel="stock-sim">Simulador</button>
+    <button class="tab" data-panel="stock-repo">Reposição</button>
+    <button class="tab" data-panel="stock-hist">Movimentações</button>
+  </div>
+
+  <div class="panel active" id="stock-sim">
+    <h2>Simulador de estoque</h2>
+    <div class="card">
+      <form id="stockForm">
+        <label>Estoque atual (unidades)</label>
+        <input id="initialStock" type="number" min="0" value="100" required>
+        <label>Demanda diária (unidades)</label>
+        <input id="dailyDemand" type="number" min="0" value="12" required>
+        <label>Prazo de reposição (dias)</label>
+        <input id="leadTime" type="number" min="0" value="5" required>
+        <label>Estoque mínimo desejado</label>
+        <input id="minimumStock" type="number" min="0" value="30" required>
+        <button class="btn" style="margin-top:16px">Simular estoque</button>
+      </form>
+      <div class="notice" id="stockResult" aria-live="polite">Preencha os dados para simular.</div>
+    </div>
+  </div>
+
+  <div class="panel" id="stock-repo">
+    <h2>Planejamento de reposição</h2>
+    <div class="card">
+      <h3>Ponto de reposição</h3>
+      <div class="notice">Ponto de reposição = demanda média diária × prazo de reposição + estoque de segurança.</div>
+      <p>O estoque de segurança deve levar em conta variações de demanda e possíveis atrasos dos fornecedores.</p>
+      <h3>Boas práticas</h3>
+      <ul>
+        <li>Realizar inventários periódicos.</li>
+        <li>Registrar entradas e saídas.</li>
+        <li>Monitorar itens com maior demanda.</li>
+        <li>Definir níveis mínimos e máximos.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel" id="stock-hist">
+    <h2>Tipos de movimentação</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Movimentação</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td>Entrada</td><td>Recebimento do fornecedor</td></tr>
+          <tr><td>Saída</td><td>Separação de pedido</td></tr>
+          <tr><td>Ajuste</td><td>Correção após inventário</td></tr>
+          <tr><td>Devolução</td><td>Retorno de produto</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">Tabela explicativa, sem registros de movimentações reais.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PÁGINA 5: PESQUISA -->
+<section class="page" id="pesquisa">
+  <div class="tabs" data-tabs="pesquisa">
+    <button class="tab active" data-panel="survey-form-panel">Questionário</button>
+    <button class="tab" data-panel="survey-results-panel">Resultados</button>
+    <button class="tab" data-panel="survey-method">Metodologia</button>
+  </div>
+
+  <div class="panel active" id="survey-form-panel">
+    <h2>Pesquisa logística</h2>
+    <div class="card">
+      <form id="surveyForm">
+        <label>Principal problema identificado</label>
+        <select id="problem" required>
+          <option value="">Selecione uma opção</option>
+          <option>Atraso nas entregas</option>
+          <option>Falta de produtos</option>
+          <option>Excesso de estoque</option>
+          <option>Erros nos pedidos</option>
+          <option>Custos elevados</option>
+          <option>Falta de organização</option>
+          <option>Outro</option>
+        </select>
+        <label>Frequência do problema</label>
+        <select id="frequency" required>
+          <option value="">Selecione uma opção</option>
+          <option>Raramente</option>
+          <option>Às vezes</option>
+          <option>Frequentemente</option>
+          <option>Sempre</option>
+        </select>
+        <label>Sugestão de melhoria (opcional)</label>
+        <textarea id="suggestion" placeholder="Registre a sugestão..."></textarea>
+        <button class="btn" style="margin-top:16px">Registrar resposta</button>
+      </form>
+      <div class="notice" id="surveyMessage" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="survey-results-panel">
+    <h2>Resultados das respostas</h2>
+    <div class="card">
+      <p id="surveyCount">Respostas registradas: 0</p>
+      <div id="surveyResults">Nenhuma resposta registrada.</div>
+      <button class="btn" id="exportCSV" style="margin-top:15px">Exportar CSV</button>
+      <button class="btn" id="clearSurvey" style="margin-top:15px;background:#b91c1c">Apagar respostas</button>
+      <p class="muted">Os registros existem apenas nesta sessão do navegador.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="survey-method">
+    <h2>Metodologia</h2>
+    <div class="card">
+      <h3>Etapas da pesquisa</h3>
+      <ol>
+        <li>Definir o problema e os objetivos.</li>
+        <li>Escolher participantes e perguntas adequadas.</li>
+        <li>Realizar a coleta de dados.</li>
+        <li>Organizar as respostas e calcular frequências.</li>
+        <li>Interpretar os resultados considerando as limitações.</li>
+      </ol>
+      <p class="notice">Informe a quantidade real de participantes e os métodos efetivamente utilizados. Não apresente dados fictícios como resultados reais.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PÁGINA 6: SOLUÇÕES -->
+<section class="page" id="solucoes">
+  <div class="tabs" data-tabs="solucoes">
+    <button class="tab active" data-panel="sol-propostas">Propostas</button>
+    <button class="tab" data-panel="sol-plano">Plano de ação</button>
+    <button class="tab" data-panel="sol-conclusao">Conclusão</button>
+    <button class="tab" data-panel="sol-fontes">Referências</button>
+  </div>
+
+  <div class="panel active" id="sol-propostas">
+    <h2>Propostas de melhoria</h2>
+    <div class="grid">
+      <div class="card"><div class="icon">📦</div><h3>Controle de estoque</h3><p>Inventários regulares, níveis mínimos e alertas de reposição.</p></div>
+      <div class="card"><div class="icon">🚚</div><h3>Transporte</h3><p>Comparação de rotas, planejamento de entregas e acompanhamento de custos.</p></div>
+      <div class="card"><div class="icon">📊</div><h3>Indicadores</h3><p>Acompanhamento de pontualidade, erros e eficiência operacional.</p></div>
+    </div>
+    <p class="notice">Selecione as propostas que respondem ao problema identificado pela pesquisa.</p>
+  </div>
+
+  <div class="panel" id="sol-plano">
+    <h2>Plano de ação</h2>
+    <div class="card">
+      <label><input type="checkbox" class="taskCheck"> 1. Identificar o problema prioritário</label>
+      <label><input type="checkbox" class="taskCheck"> 2. Organizar os dados coletados</label>
+      <label><input type="checkbox" class="taskCheck"> 3. Definir solução e responsáveis</label>
+      <label><input type="checkbox" class="taskCheck"> 4. Estabelecer prazo, recursos e metas</label>
+      <label><input type="checkbox" class="taskCheck"> 5. Avaliar os resultados e documentar a conclusão</label>
+      <div class="progress"><div id="planProgress"></div></div>
+      <p id="planStatus">0 de 5 etapas concluídas.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="sol-conclusao">
+    <h2>Conclusão do grupo</h2>
+    <div class="card">
+      <p contenteditable="true">Escreva aqui a conclusão: qual problema foi encontrado, quais evidências foram coletadas, qual solução foi proposta e quais benefícios são esperados.</p>
+      <p class="muted">Clique no texto para editá-lo.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="sol-fontes">
+    <h2>Referências e uso da IA</h2>
+    <div class="card">
+      <h3>Referências</h3>
+      <p contenteditable="true">Insira livros, artigos e sites realmente consultados, com autor, título, endereço eletrônico e data de acesso, quando aplicável.</p>
+      <h3>Uso de inteligência artificial</h3>
+      <p contenteditable="true">Registre as ferramentas utilizadas, a finalidade do uso e as verificações feitas pelo grupo, de acordo com as orientações do professor.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="logo" style="color:white">Logi<span>Smart.</span></div>
+  <p>Projeto acadêmico de Administração e Logística.</p>
+  <p>Os indicadores iniciais são demonstrativos. Substitua-os por dados verificados.</p>
+  <p>© <span id="year"></span> LogiSmart</p>
+</footer>
+
+<script>
+// NAVEGAÇÃO ENTRE AS SEIS PÁGINAS
+const pageInfo = {
+  inicio: {
+    title:"Logística inteligente para resultados melhores.",
+    desc:"Conheça nosso projeto, explore indicadores e descubra oportunidades para melhorar os processos logísticos."
+  },
+  indicadores:{
+    title:"Indicadores logísticos",
+    desc:"Analise o desempenho, acompanhe métricas e use dados para apoiar decisões."
+  },
+  transporte:{
+    title:"Transporte e distribuição",
+    desc:"Explore o fluxo de mercadorias e calcule custos estimados de transporte."
+  },
+  estoque:{
+    title:"Gestão inteligente de estoque",
+    desc:"Simule a demanda, planeje a reposição e identifique riscos de falta de produtos."
+  },
+  pesquisa:{
+    title:"Pesquisa logística",
+    desc:"Registre respostas e identifique os principais problemas relatados."
+  },
+  solucoes:{
+    title:"Transformando análise em soluções",
+    desc:"Organize propostas de melhoria e acompanhe as etapas de implementação."
+  }
+};
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.toggle("active",page.id===id);
+  });
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.page===id);
+  });
+  document.getElementById("heroTitle").textContent=pageInfo[id].title;
+  document.getElementById("heroDescription").textContent=pageInfo[id].desc;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>showPage(btn.dataset.page));
+});
+document.querySelectorAll("[data-goto]").forEach(btn=>{
+  btn.addEventListener("click",()=>showPage(btn.dataset.goto));
+});
+
+// ABAS INDEPENDENTES EM CADA PÁGINA
+document.querySelectorAll("[data-tabs]").forEach(group=>{
+  const page=group.closest(".page");
+  const buttons=group.querySelectorAll(".tab");
+
+  buttons.forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const target=btn.dataset.panel;
+      group.querySelectorAll(".tab").forEach(tab=>{
+        const active=tab===btn;
+        tab.classList.toggle("active",active);
+        tab.setAttribute("aria-selected",String(active));
+      });
+      page.querySelectorAll(".panel").forEach(panel=>{
+        if(panel.closest("[data-tabs]")===null){
+          panel.classList.toggle("active",panel.id===target);
+        }
+      });
+    });
+  });
+});
+
+// INDICADORES
+const fmt=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:2});
+function renderBars(value){
+  const container=document.getElementById("deliveryBars");
+  container.replaceChildren();
+  [
+    {name:"Entregas no prazo — situação inicial",value:value,color:"#94a3b8"},
+    {name:"Meta ilustrativa",value:Math.min(100,value+18),color:"#16a085"}
+  ].forEach(item=>{
+    const label=document.createElement("p");
+    label.textContent=item.name+": "+item.value+"%";
+    container.appendChild(label);
+    const bar=document.createElement("div");
+    bar.className="progress";
+    const fill=document.createElement("div");
+    fill.style.width=item.value+"%";
+    fill.style.background=item.color;
+    bar.appendChild(fill);
+    container.appendChild(bar);
+  });
+}
+function updateKPIs(){
+  const delivery=Number(document.getElementById("delivery").value);
+  const stock=Number(document.getElementById("stock").value);
+  const errors=Number(document.getElementById("errors").value);
+  const time=Number(document.getElementById("time").value);
+  if([delivery,stock,errors].some(n=>!Number.isFinite(n)||n<0||n>100)||!Number.isFinite(time)||time<0){
+    document.getElementById("kpiMessage").textContent="Confira os valores: percentuais entre 0 e 100 e tempo não negativo.";
+    return;
+  }
+  document.getElementById("kpiDelivery").textContent=delivery+"%";
+  document.getElementById("kpiStock").textContent=stock+"%";
+  document.getElementById("kpiErrors").textContent=errors+"%";
+  document.getElementById("kpiTime").textContent=fmt(time)+" dias";
+  renderBars(delivery);
+  document.getElementById("kpiMessage").textContent="Painel atualizado. Registre a fonte dos valores utilizados.";
+}
+document.getElementById("kpiForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  updateKPIs();
+});
+renderBars(72);
+
+// TRANSPORTE
+document.getElementById("routeForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const distance=Number(document.getElementById("distance").value);
+  const cost=Number(document.getElementById("cost").value);
+  const output=document.getElementById("routeResult");
+  if(!Number.isFinite(distance)||!Number.isFinite(cost)||distance<0||cost<0){
+    output.textContent="Informe valores válidos e não negativos.";
+    return;
+  }
+  output.textContent="Custo estimado: "+(distance*cost).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+});
+
+// ESTOQUE
+document.getElementById("stockForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const stock=Number(document.getElementById("initialStock").value);
+  const demand=Number(document.getElementById("dailyDemand").value);
+  const lead=Number(document.getElementById("leadTime").value);
+  const minimum=Number(document.getElementById("minimumStock").value);
+  const output=document.getElementById("stockResult");
+  if([stock,demand,lead,minimum].some(n=>!Number.isFinite(n)||n<0)){
+    output.textContent="Informe valores válidos e não negativos.";
+    return;
+  }
+  const remaining=stock-demand*lead;
+  if(demand>0&&stock/demand<lead){
+    output.textContent="Atenção: o estoque pode acabar antes da reposição. Cobertura estimada: "+fmt(stock/demand)+" dias. Faltariam "+fmt(Math.max(0,-remaining))+" unidades até o fim do prazo.";
+  }else if(remaining<=minimum){
+    output.textContent="Estoque projetado ao fim do prazo: "+fmt(remaining)+" unidades. Avalie antecipar a reposição.";
+  }else{
+    output.textContent="Estoque projetado ao fim do prazo: "+fmt(remaining)+" unidades. Acima do mínimo desejado.";
+  }
+});
+
+// PESQUISA
+let responses=[];
+function renderSurvey(){
+  const count=document.getElementById("surveyCount");
+  const results=document.getElementById("surveyResults");
+  count.textContent="Respostas registradas: "+responses.length;
+  results.replaceChildren();
+  if(!responses.length){
+    results.textContent="Nenhuma resposta registrada.";
+    return;
+  }
+  const counts={};
+  responses.forEach(r=>counts[r.problem]=(counts[r.problem]||0)+1);
+  Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([name,n])=>{
+    const line=document.createElement("p");
+    line.textContent=name+": "+n+" resposta(s) — "+fmt(n/responses.length*100)+"%";
+    results.appendChild(line);
+    const bar=document.createElement("div");
+    bar.className="progress";
+    const fill=document.createElement("div");
+    fill.style.width=n/responses.length*100+"%";
+    bar.appendChild(fill);
+    results.appendChild(bar);
+  });
+}
+document.getElementById("surveyForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  responses.push({
+    problem:document.getElementById("problem").value,
+    frequency:document.getElementById("frequency").value,
+    suggestion:document.getElementById("suggestion").value
+  });
+  renderSurvey();
+  document.getElementById("surveyMessage").textContent="Resposta adicionada à sessão atual.";
+  e.target.reset();
+});
+document.getElementById("clearSurvey").addEventListener("click",()=>{
+  if(confirm("Apagar todas as respostas desta sessão?")){
+    responses=[];
+    renderSurvey();
+  }
+});
+document.getElementById("exportCSV").addEventListener("click",()=>{
+  if(!responses.length){
+    alert("Registre pelo menos uma resposta antes de exportar.");
+    return;
+  }
+  const quote=value=>'"'+String(value).replace(/"/g,'""')+'"';
+  const csv=[
+    ["Problema","Frequência","Sugestão"],
+    ...responses.map(r=>[r.problem,r.frequency,r.suggestion])
+  ].map(row=>row.map(quote).join(";")).join("\r\n");
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download="pesquisa-logismart.csv";
+  link.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+renderSurvey();
+
+// PLANO DE AÇÃO
+const checks=[...document.querySelectorAll(".taskCheck")];
+function updatePlan(){
+  const completed=checks.filter(c=>c.checked).length;
+  document.getElementById("planProgress").style.width=(completed/checks.length*100)+"%";
+  document.getElementById("planStatus").textContent=
+    completed+" de "+checks.length+" etapas concluídas ("+
+    Math.round(completed/checks.length*100)+"%).";
+}
+checks.forEach(check=>check.addEventListener("change",updatePlan));
+
+// RODAPÉ
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
